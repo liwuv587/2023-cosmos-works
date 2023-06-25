@@ -1,50 +1,49 @@
 **1.**   用ignite生成一条新的区块链名字叫planet。
 
-```
-ignite scaffold chain planet --no-module
+```shell
+ignite scaffold chain planet --no-module --skip-git
 ```
 
 **2.**  使用ignite生成一个Blog的模块，并且集成IBC。
 
-```
+```shell
 ignite scaffold module blog --ibc
 ```
 
 **3.** 给blog模块添加针对博文（post）的增删改查。
 
-```
+```shell
 ignite scaffold list post title content creator --no-message --module blog
-
 ```
 
 **4.** 添加已发生成功博文（sentPost）的增删改查。
 
-```
+```shell
 ignite scaffold list sentPost postID title chain creator --no-message --module blog
 ```
 
 **5.** 添加发送超时博文（timeoutPost）的增删改查。
 
-```
+```shell
 ignite scaffold list timedoutPost title chain creator --no-message --module blog
 ```
 
 **6.** 添加IBC发送数据包和确认数据包的结构。
 
-```
+```shell
 ignite scaffold packet ibcPost title content --ack postID --module blog
 
 ```
   
 **7.** 在proto/blog/packet.proto目录下修改`IbcPostPacketData`，添加创建人`Creator`， 并重新编译proto文件。在x/blog/keeper/msg_server_ibc_post.go。编译完成后在x/blog/keeper/msg_server_ibc_post.go中发送数据包前更新`Creator`。
 
-```
+```shell
 ignite chain build
 ```
 
 **8.** 修改keeper方法中的`OnRecvIbcPostPacket `。
 
-```
+```shell
 id := k.AppendPost(
         ctx,
         types.Post{
@@ -59,7 +58,7 @@ id := k.AppendPost(
 
 **9.** 修改keeper方法中的`OnAcknowledgementIbcPostPacket `。
 
-```
+```shell
 k.AppendSentPost(
             ctx,
             types.SentPost{
@@ -73,7 +72,7 @@ k.AppendSentPost(
 
 **10.** 修改keeper方法中的`OnTimeoutIbcPostPacket `。
 
-```
+```shell
 k.AppendTimedoutPost(
         ctx,
         types.TimedoutPost{
