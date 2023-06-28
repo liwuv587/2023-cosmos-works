@@ -8,12 +8,14 @@ build:
 accounts:
 - name: alice
   coins:
-  - 1000token
-  - 100000000stake
+    - 1000token
+    - 100000000stake
+  mnemonic: ordinary knock space mandate vague spoon siren document raccoon orange apology earn episode nerve lamp that spin doll capable device lizard speed labor second
 - name: bob
   coins:
-  - 500token
-  - 100000000stake
+    - 500token
+    - 100000000stake
+  mnemonic: sheriff uncover tattoo cement umbrella clown social lawn novel midnight bird ticket capital aisle analyst journey crouch crime reduce melt menu wait gorilla army
 faucet:
   name: bob
   coins:

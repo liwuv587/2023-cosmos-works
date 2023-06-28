@@ -165,7 +165,7 @@ ignite relayer connect
 **14.** 从earth链向mars链发送博文数据包（注意修改channel id）
 
 ```
-planetd tx blog send-ibc-post blog channel-4 "Hello" "Hello Mars, I'm Alice from Earth" --from alice --chain-id earth --home ~/.earth
+planetd tx blog send-ibc-post blog channel-4 "Hello" "Hello Mars, I'm Alice from Earth" --from alice --chain-id earth --home ~/dist/.earth
 ```
 
 **15.** 通过rpc查询验证结果。
