@@ -52,6 +52,8 @@ func (k Keeper) OnRecvIbcPostPacket(ctx sdk.Context, packet channeltypes.Packet,
 	)
 
 	packetAck.PostID = strconv.FormatUint(id, 10)
+
+	k.SetPostCount(ctx, k.GetPostCount(ctx)+1)
 	return packetAck, nil
 }
 
@@ -84,6 +86,8 @@ func (k Keeper) OnAcknowledgementIbcPostPacket(ctx sdk.Context, packet channelty
 				Chain:   packet.DestinationPort + "-" + packet.DestinationChannel,
 			},
 		)
+
+		k.SetSentPostCount(ctx, k.GetSentPostCount(ctx)+1)
 		return nil
 	default:
 		// The counter-party module doesn't implement the correct acknowledgment format

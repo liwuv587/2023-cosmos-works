@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -41,6 +42,18 @@ func (k Keeper) OnRecvUpdatePostPacket(ctx sdk.Context, packet channeltypes.Pack
 	}
 
 	// TODO: packet reception logic
+	id, err := strconv.ParseUint(data.GetPostID(), 10, 64)
+	if err != nil {
+		return packetAck, err
+	}
+	post, found := k.GetPost(ctx, id)
+	if !found {
+		return packetAck, errors.New("post not found")
+	}
+	post.Title = data.GetTitle()
+	post.Content = data.GetContent()
+	k.SetPost(ctx, post)
+	packetAck.PostID = data.PostID
 
 	return packetAck, nil
 }
@@ -65,7 +78,13 @@ func (k Keeper) OnAcknowledgementUpdatePostPacket(ctx sdk.Context, packet channe
 		}
 
 		// TODO: successful acknowledgement logic
-
+		id, _ := strconv.ParseUint(data.PostID, 10, 64) // 字符串转换为 int
+		post, found := k.GetSentPost(ctx, id)
+		if !found {
+			return errors.New("cannot find post")
+		}
+		post.Title = data.GetTitle()
+		k.SetSentPost(ctx, post)
 		return nil
 	default:
 		// The counter-party module doesn't implement the correct acknowledgment format
